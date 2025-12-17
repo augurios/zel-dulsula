@@ -15,6 +15,19 @@ export class MoveState extends BaseMoveState {
   public onUpdate(): void {
     const controls = this._gameObject.controls;
 
+    // check for dash input (C key + direction)
+    if (controls.isDashKeyDown && 
+        (controls.isDownDown || controls.isUpDown || controls.isLeftDown || controls.isRightDown)) {
+      // only dash if cooldown has expired (player-specific check)
+      if ('canDash' in this._gameObject && typeof this._gameObject.canDash === 'boolean' && this._gameObject.canDash) {
+        if ('resetDashCooldown' in this._gameObject && typeof this._gameObject.resetDashCooldown === 'function') {
+          this._gameObject.resetDashCooldown();
+        }
+        this._stateMachine.setState(CHARACTER_STATES.DASH_STATE);
+        return;
+      }
+    }
+
     // if attack key was pressed, attack with weapon
     if (controls.isAttackKeyJustDown) {
       this._stateMachine.setState(CHARACTER_STATES.ATTACK_STATE);

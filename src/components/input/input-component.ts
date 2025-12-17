@@ -7,6 +7,7 @@ export class InputComponent {
   #attackKey: boolean;
   #selectKey: boolean;
   #enterKey: boolean;
+  #dashKey: boolean;
   #isMovementLocked: boolean;
 
   constructor() {
@@ -18,6 +19,7 @@ export class InputComponent {
     this.#attackKey = false;
     this.#selectKey = false;
     this.#enterKey = false;
+    this.#dashKey = false;
     this.#isMovementLocked = false;
   }
 
@@ -101,6 +103,14 @@ export class InputComponent {
     this.#enterKey = val;
   }
 
+  get isDashKeyDown(): boolean {
+    return this.#dashKey;
+  }
+
+  set isDashKeyDown(val: boolean) {
+    this.#dashKey = val;
+  }
+
   public reset(): void {
     this.#down = false;
     this.#up = false;
@@ -110,6 +120,7 @@ export class InputComponent {
     this.#actionKey = false;
     this.#selectKey = false;
     this.#enterKey = false;
+    this.#dashKey = false;
     this.#isMovementLocked = false;
   }
 }

@@ -6,6 +6,7 @@ import { CHARACTER_STATES } from '../../components/state-machine/states/characte
 import { MoveState } from '../../components/state-machine/states/character/move-state';
 import {
   PLAYER_ATTACK_DAMAGE,
+  PLAYER_DASH_COOLDOWN,
   PLAYER_HURT_PUSH_BACK_SPEED,
   PLAYER_INVULNERABLE_AFTER_HIT_DURATION,
   PLAYER_SPEED,
@@ -24,6 +25,7 @@ import { MoveHoldingState } from '../../components/state-machine/states/characte
 import { HeldGameObjectComponent } from '../../components/game-object/held-game-object-component';
 import { ThrowState } from '../../components/state-machine/states/character/throw-state';
 import { AttackState } from '../../components/state-machine/states/character/attack-state';
+import { DashState } from '../../components/state-machine/states/character/dash-state';
 import { WeaponComponent } from '../../components/game-object/weapon-component';
 import { Sword } from '../weapons/sword';
 
@@ -38,6 +40,7 @@ export type PlayerConfig = {
 export class Player extends CharacterGameObject {
   #collidingObjectsComponent: CollidingObjectsComponent;
   #weaponComponent: WeaponComponent;
+  #lastDashTime: number;
 
   constructor(config: PlayerConfig) {
     // create animation config for component
@@ -103,7 +106,11 @@ export class Player extends CharacterGameObject {
     this._stateMachine.addState(new MoveHoldingState(this));
     this._stateMachine.addState(new ThrowState(this));
     this._stateMachine.addState(new AttackState(this));
+    this._stateMachine.addState(new DashState(this));
     this._stateMachine.setState(CHARACTER_STATES.IDLE_STATE);
+
+    // initialize dash cooldown
+    this.#lastDashTime = 0;
 
     // add components
     this.#collidingObjectsComponent = new CollidingObjectsComponent(this);
@@ -141,6 +148,15 @@ export class Player extends CharacterGameObject {
 
   get weaponComponent(): WeaponComponent {
     return this.#weaponComponent;
+  }
+
+  get canDash(): boolean {
+    const currentTime = this.scene.time.now;
+    return currentTime - this.#lastDashTime >= PLAYER_DASH_COOLDOWN;
+  }
+
+  public resetDashCooldown(): void {
+    this.#lastDashTime = this.scene.time.now;
   }
 
   public collidedWithGameObject(gameObject: GameObject): void {

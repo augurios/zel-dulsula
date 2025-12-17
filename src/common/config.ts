@@ -3,6 +3,9 @@ export const ENABLE_DEBUG_ZONE_AREA = false;
 export const DEBUG_COLLISION_ALPHA = 0;
 
 export const PLAYER_SPEED = 80;
+export const PLAYER_DASH_SPEED = 400;
+export const PLAYER_DASH_DURATION = 200;
+export const PLAYER_DASH_COOLDOWN = 500;
 export const PLAYER_INVULNERABLE_AFTER_HIT_DURATION = 1000;
 export const PLAYER_HURT_PUSH_BACK_SPEED = 50;
 export const PLAYER_START_MAX_HEALTH = 6;
