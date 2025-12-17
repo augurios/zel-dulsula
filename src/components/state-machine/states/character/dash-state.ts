@@ -21,18 +21,33 @@ export class DashState extends BaseCharacterState {
     const controls = this._gameObject.controls;
     let dashDirection = this._gameObject.direction;
     
-    // Prioritize vertical input, then horizontal
+    // Reset velocity
+    this._gameObject.body.velocity.x = 0;
+    this._gameObject.body.velocity.y = 0;
+
+    // Set velocity based on input (allows diagonal movement)
     if (controls.isUpDown) {
+      this._gameObject.body.velocity.y = -1;
       dashDirection = 'UP';
     } else if (controls.isDownDown) {
+      this._gameObject.body.velocity.y = 1;
       dashDirection = 'DOWN';
-    } else if (controls.isLeftDown) {
+    }
+
+    if (controls.isLeftDown) {
+      this._gameObject.body.velocity.x = -1;
+      this._gameObject.setFlipX(true);
       dashDirection = 'LEFT';
     } else if (controls.isRightDown) {
+      this._gameObject.body.velocity.x = 1;
+      this._gameObject.setFlipX(false);
       dashDirection = 'RIGHT';
     }
 
-    // Update the character's direction to match dash direction
+    // Normalize and scale to dash speed (handles diagonals correctly)
+    this._gameObject.body.velocity.normalize().scale(PLAYER_DASH_SPEED);
+
+    // Update the character's direction to match dash direction (for animation)
     this._gameObject.direction = dashDirection;
 
     // Play walk animation in dash direction (reusing walk animations)
@@ -40,27 +55,6 @@ export class DashState extends BaseCharacterState {
 
     // Make player invulnerable during dash
     this._gameObject.invulnerableComponent.isInvulnerable = true;
-
-    // Set velocity to dash speed in dash direction
-    this._gameObject.body.velocity.x = 0;
-    this._gameObject.body.velocity.y = 0;
-
-    switch (dashDirection) {
-      case 'UP':
-        this._gameObject.body.velocity.y = -PLAYER_DASH_SPEED;
-        break;
-      case 'DOWN':
-        this._gameObject.body.velocity.y = PLAYER_DASH_SPEED;
-        break;
-      case 'LEFT':
-        this._gameObject.body.velocity.x = -PLAYER_DASH_SPEED;
-        this._gameObject.setFlipX(true);
-        break;
-      case 'RIGHT':
-        this._gameObject.body.velocity.x = PLAYER_DASH_SPEED;
-        this._gameObject.setFlipX(false);
-        break;
-    }
 
     // Set up collision callback for bounce-back
     this._collisionCallback = this.#handleWallCollision.bind(this);
