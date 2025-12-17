@@ -17,18 +17,35 @@ export class DashState extends BaseCharacterState {
       return;
     }
 
-    // Play walk animation in current direction (reusing walk animations)
-    this._gameObject.animationComponent.playAnimation(`WALK_${this._gameObject.direction}`);
+    // Determine dash direction from current input (not stored direction)
+    const controls = this._gameObject.controls;
+    let dashDirection = this._gameObject.direction;
+    
+    // Prioritize vertical input, then horizontal
+    if (controls.isUpDown) {
+      dashDirection = 'UP';
+    } else if (controls.isDownDown) {
+      dashDirection = 'DOWN';
+    } else if (controls.isLeftDown) {
+      dashDirection = 'LEFT';
+    } else if (controls.isRightDown) {
+      dashDirection = 'RIGHT';
+    }
+
+    // Update the character's direction to match dash direction
+    this._gameObject.direction = dashDirection;
+
+    // Play walk animation in dash direction (reusing walk animations)
+    this._gameObject.animationComponent.playAnimation(`WALK_${dashDirection}`);
 
     // Make player invulnerable during dash
     this._gameObject.invulnerableComponent.isInvulnerable = true;
 
-    // Set velocity to dash speed in current direction
-    const direction = this._gameObject.direction;
+    // Set velocity to dash speed in dash direction
     this._gameObject.body.velocity.x = 0;
     this._gameObject.body.velocity.y = 0;
 
-    switch (direction) {
+    switch (dashDirection) {
       case 'UP':
         this._gameObject.body.velocity.y = -PLAYER_DASH_SPEED;
         break;
