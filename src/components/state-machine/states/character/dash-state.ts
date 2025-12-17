@@ -54,7 +54,7 @@ export class DashState extends BaseCharacterState {
     this._gameObject.animationComponent.playAnimation(`WALK_${dashDirection}`);
 
     // Make player invulnerable during dash
-    this._gameObject.invulnerableComponent.isInvulnerable = true;
+    // this._gameObject.invulnerableComponent.isInvulnerable = true;
 
     // Set up collision callback for bounce-back
     this._collisionCallback = this.#handleWallCollision.bind(this);
@@ -99,7 +99,7 @@ export class DashState extends BaseCharacterState {
 
   #endDash(): void {
     // Remove invulnerability
-    this._gameObject.invulnerableComponent.isInvulnerable = false;
+    // this._gameObject.invulnerableComponent.isInvulnerable = false;
 
     // Clean up collision callback
     if (isArcadePhysicsBody(this._gameObject.body)) {
