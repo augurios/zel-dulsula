@@ -7,6 +7,9 @@ import { MoveState } from '../../components/state-machine/states/character/move-
 import {
   PLAYER_ATTACK_DAMAGE,
   PLAYER_DASH_COOLDOWN,
+  PLAYER_DASH_COOLDOWN_DECREASE_RATE,
+  PLAYER_DASH_COOLDOWN_INCREMENT,
+  PLAYER_DASH_COOLDOWN_MAX,
   PLAYER_HURT_PUSH_BACK_SPEED,
   PLAYER_INVULNERABLE_AFTER_HIT_DURATION,
   PLAYER_SPEED,
@@ -41,6 +44,8 @@ export class Player extends CharacterGameObject {
   #collidingObjectsComponent: CollidingObjectsComponent;
   #weaponComponent: WeaponComponent;
   #lastDashTime: number;
+  #consecutiveDashes: number;
+  #currentDashCooldown: number;
 
   constructor(config: PlayerConfig) {
     // create animation config for component
@@ -111,6 +116,8 @@ export class Player extends CharacterGameObject {
 
     // initialize dash cooldown
     this.#lastDashTime = 0;
+    this.#consecutiveDashes = 0;
+    this.#currentDashCooldown = PLAYER_DASH_COOLDOWN;
 
     // add components
     this.#collidingObjectsComponent = new CollidingObjectsComponent(this);
@@ -152,11 +159,18 @@ export class Player extends CharacterGameObject {
 
   get canDash(): boolean {
     const currentTime = this.scene.time.now;
-    return currentTime - this.#lastDashTime >= PLAYER_DASH_COOLDOWN;
+    return currentTime - this.#lastDashTime >= this.#currentDashCooldown;
   }
 
   public resetDashCooldown(): void {
     this.#lastDashTime = this.scene.time.now;
+    this.#consecutiveDashes++;
+    
+    // Increase cooldown with each consecutive dash, up to max
+    this.#currentDashCooldown = Math.min(
+      PLAYER_DASH_COOLDOWN + (this.#consecutiveDashes * PLAYER_DASH_COOLDOWN_INCREMENT),
+      PLAYER_DASH_COOLDOWN_MAX
+    );
   }
 
   public collidedWithGameObject(gameObject: GameObject): void {
@@ -167,5 +181,19 @@ export class Player extends CharacterGameObject {
     super.update();
     this.#collidingObjectsComponent.reset();
     this.#weaponComponent.update();
+    
+    // Gradually decrease dash cooldown when not dashing
+    const timeSinceLastDash = this.scene.time.now - this.#lastDashTime;
+    if (timeSinceLastDash > this.#currentDashCooldown && this.#currentDashCooldown > PLAYER_DASH_COOLDOWN) {
+      this.#currentDashCooldown = Math.max(
+        this.#currentDashCooldown - PLAYER_DASH_COOLDOWN_DECREASE_RATE,
+        PLAYER_DASH_COOLDOWN
+      );
+      
+      // Reset consecutive dash counter when cooldown returns to base
+      if (this.#currentDashCooldown === PLAYER_DASH_COOLDOWN) {
+        this.#consecutiveDashes = 0;
+      }
+    }
   }
 }
