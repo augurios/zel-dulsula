@@ -1,0 +1,276 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "compatibilityVersion": 1100,
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "propertyTypes": [
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 9,
+            "members": [
+                {
+                    "name": "contents",
+                    "propertyType": "chestRewards",
+                    "type": "string",
+                    "value": "SMALL_KEY"
+                },
+                {
+                    "name": "id",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "requiresBossKey",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "revealChestTrigger",
+                    "propertyType": "trapTrigger",
+                    "type": "string",
+                    "value": "NONE"
+                }
+            ],
+            "name": "chest",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
+            "id": 8,
+            "name": "chestRewards",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "SMALL_KEY",
+                "BOSS_KEY",
+                "MAP",
+                "COMPASS",
+                "NOTHING"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 3,
+            "name": "direction",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "DOWN",
+                "UP",
+                "LEFT",
+                "RIGHT"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 1,
+            "members": [
+                {
+                    "name": "direction",
+                    "propertyType": "direction",
+                    "type": "string",
+                    "value": "DOWN"
+                },
+                {
+                    "name": "doorType",
+                    "propertyType": "doorType",
+                    "type": "string",
+                    "value": "OPEN"
+                },
+                {
+                    "name": "id",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "isLevelTransition",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "targetDoorId",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "targetLevel",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "targetRoomId",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "trapDoorTrigger",
+                    "propertyType": "trapTrigger",
+                    "type": "string",
+                    "value": "NONE"
+                }
+            ],
+            "name": "door",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "doorType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "OPEN",
+                "LOCK",
+                "TRAP",
+                "BOSS",
+                "OPEN_ENTRANCE"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 10,
+            "members": [
+                {
+                    "name": "type",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "enemy",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 11,
+            "members": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "room",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+                {
+                    "name": "action",
+                    "propertyType": "switchAction",
+                    "type": "string",
+                    "value": "NOTHING"
+                },
+                {
+                    "name": "targetIds",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "texture",
+                    "propertyType": "switchTexture",
+                    "type": "string",
+                    "value": "PLATE"
+                }
+            ],
+            "name": "switch",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
+            "id": 6,
+            "name": "switchAction",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "NOTHING",
+                "OPEN_DOOR",
+                "REVEAL_CHEST",
+                "REVEAL_KEY"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 5,
+            "name": "switchTexture",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "PLATE",
+                "FLOOR"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 7,
+            "name": "trapTrigger",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "NONE",
+                "ENEMIES_DEFEATED",
+                "SWITCH"
+            ],
+            "valuesAsFlags": false
+        }
+    ]
+}
